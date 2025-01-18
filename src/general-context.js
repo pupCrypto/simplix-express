@@ -8,3 +8,7 @@ generalContext.attach = (context) => {
 generalContext.clear = () => {
     delete generalContext.context;
 }
+
+module.exports = {
+    generalContext,
+}
