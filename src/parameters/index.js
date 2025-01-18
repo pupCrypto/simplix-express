@@ -26,8 +26,18 @@ function param(name) {
     return request().params[name];
 }
 
+/**
+ * Returns header value by name
+ * @param {string} name Header name
+ * @returns {string} Header value
+ */
+function header(name) {
+    return request().headers[name];
+}
+
 module.exports = {
     request,
     query,
     param,
+    header,
 }
