@@ -1,0 +1,1 @@
+- Need to wrap all route handlers in runtime, not when method is called
