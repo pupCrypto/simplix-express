@@ -1,0 +1,27 @@
+{
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "name": "simplix-express",
+  "description": "Extensioned Express webframework for simplifying work with building your web-apps",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "node --test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pupCrypto/simplix-express.git"
+  },
+  "keywords": [
+    "express",
+    "simplix"
+  ],
+  "author": "pupCrypto",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pupCrypto/simplix-express/issues"
+  },
+  "homepage": "https://github.com/pupCrypto/simplix-express#readme"
+}
