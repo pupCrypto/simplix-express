@@ -35,6 +35,15 @@ function header(name) {
     return request().headers[name];
 }
 
+/**
+ * Return validated body of request
+ * @param {object} schema
+ * @returns {object} Validated body of request
+ */
+function body() {
+    return request().body;
+}
+
 module.exports = {
     request,
     query,
