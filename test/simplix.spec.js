@@ -1,7 +1,8 @@
 const assert = require('node:assert');
 const { describe, it } = require('node:test');
 const { SimplixExpress } = require('../src/simplix');
-const { query, param, header } = require('../src/parameters');
+const { query, param, header, body } = require('../src/parameters');
+const { BaseValidator, int, struct } = require('../src/validator');
 
 describe('Simplix', () => {
     it('should handle get request', async () => {
@@ -94,6 +95,36 @@ describe('Simplix', () => {
         const resp = await fetch('http://localhost:3000/');
         assert.strictEqual(resp.status, 200);
         assert.strictEqual(await resp.text(), 'Test Hello World!');
+        server.close();
+    });
+    it('should handle post request with body', async () => {
+        class TestValidator extends BaseValidator {
+            a = int();
+            child = struct(class extends BaseValidator { b = int(); });
+        }
+
+        const simplix = new SimplixExpress();
+        simplix.post('/', (data = body(TestValidator)) => {
+            return `Test ${data.a} ${data.child.b}`;
+        });
+
+        const server = simplix.listen(3000, () => {
+            console.log('Server is running on port 3000');
+        });
+        const resp = await fetch('http://localhost:3000/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                a: '123',
+                child: {
+                    b: '123',
+                },
+            }),
+        });
+        assert.strictEqual(resp.status, 200);
+        assert.strictEqual(await resp.text(), 'Test 123 123');
         server.close();
     });
 });

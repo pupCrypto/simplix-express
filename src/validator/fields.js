@@ -9,6 +9,10 @@ class Field {
     }
 }
 
+function struct(structure, { name } = {}) {
+    return new Field({ validator: value => (new structure(value)).validate(), name });
+}
+
 function string(name) {
     return new Field(value => value.toString(), name);
 }
@@ -32,4 +36,5 @@ module.exports = {
     float,
     boolean,
     array,
+    struct,
 }

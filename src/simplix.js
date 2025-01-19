@@ -4,6 +4,7 @@ const express = require('express');
 class SimplixExpress {
     constructor() {
         this.app = express();
+        this.app.use(express.json());
     }
 
     get(path, callback) {

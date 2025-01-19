@@ -40,8 +40,12 @@ function header(name) {
  * @param {object} schema
  * @returns {object} Validated body of request
  */
-function body() {
-    return request().body;
+function body(schema) {
+    if (header('content-type') === 'application/json') {
+        return (new schema(request().body)).validate();
+    } else {
+        return (new schema(JSON.parse(request().body))).validate();
+    }
 }
 
 module.exports = {
@@ -49,4 +53,5 @@ module.exports = {
     query,
     param,
     header,
+    body,
 }
