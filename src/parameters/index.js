@@ -1,5 +1,9 @@
 const { generalContext } = require('../general-context');
 
+function _paramCallback() {
+    return generalContext().callback;
+}
+
 /**
  * Current express request object
  * @returns {import('express').Request}
@@ -13,7 +17,11 @@ function request() {
  * @param {string} name Query parameter name
  * @returns {string} Query parameter value
  */
-function query(name, { required, ignoreSwagger } = {}) {
+function query(name, { required, ignoreCallback} = {}) {
+    const callback = _paramCallback();
+    if (callback) {
+        return callback('query', { name, required, ignoreCallback });
+    }
     return request().query[name];
 }
 
@@ -22,7 +30,11 @@ function query(name, { required, ignoreSwagger } = {}) {
  * @param {string} name Path parameter name
  * @returns {string} Path parameter value
  */
-function param(name, { required, ignoreSwagger } = {}) {
+function param(name, { required, ignoreCallback } = {}) {
+    const callback = _paramCallback();
+    if (callback) {
+        return callback('param', { name, required, ignoreCallback });
+    }
     return request().params[name];
 }
 
@@ -31,7 +43,11 @@ function param(name, { required, ignoreSwagger } = {}) {
  * @param {string} name Header name
  * @returns {string} Header value
  */
-function header(name, { required, ignoreSwagger } = {}) {
+function header(name, { required, ignoreCallback } = {}) {
+    const callback = _paramCallback();
+    if (callback) {
+        return callback('header', { name, required, ignoreCallback });
+    }
     return request().headers[name];
 }
 
@@ -40,7 +56,11 @@ function header(name, { required, ignoreSwagger } = {}) {
  * @param {object} schema
  * @returns {object} Validated body of request
  */
-function body(schema, { required, ignoreSwagger } = {}) {
+function body(schema, { required, ignoreCallback } = {}) {
+    const callback = _paramCallback();
+    if (callback) {
+        return callback('body', { schema, required, ignoreCallback });
+    }
     if (header('content-type') === 'application/json') {
         return (new schema(request().body)).validate();
     } else {

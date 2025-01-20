@@ -15,7 +15,15 @@ class SimplixExpress {
     }
 
     listen(port, callback) {
+        // this.app.get('/docs', this._genDocs());
         return this.app.listen(port, callback);
+    }
+
+    _genDocs() {
+        paramCallback = (type, params) => {
+            console.log(type, params);
+        };
+        generalContext.attach({ callback: paramCallback });
     }
 
     _wrap(callback) {
