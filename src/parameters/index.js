@@ -13,7 +13,7 @@ function request() {
  * @param {string} name Query parameter name
  * @returns {string} Query parameter value
  */
-function query(name) {
+function query(name, { required, ignoreSwagger } = {}) {
     return request().query[name];
 }
 
@@ -22,7 +22,7 @@ function query(name) {
  * @param {string} name Path parameter name
  * @returns {string} Path parameter value
  */
-function param(name) {
+function param(name, { required, ignoreSwagger } = {}) {
     return request().params[name];
 }
 
@@ -31,7 +31,7 @@ function param(name) {
  * @param {string} name Header name
  * @returns {string} Header value
  */
-function header(name) {
+function header(name, { required, ignoreSwagger } = {}) {
     return request().headers[name];
 }
 
@@ -40,7 +40,7 @@ function header(name) {
  * @param {object} schema
  * @returns {object} Validated body of request
  */
-function body(schema) {
+function body(schema, { required, ignoreSwagger } = {}) {
     if (header('content-type') === 'application/json') {
         return (new schema(request().body)).validate();
     } else {
