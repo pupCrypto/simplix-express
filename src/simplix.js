@@ -1,5 +1,7 @@
 const { generalContext } = require('./general-context');
 const express = require('express');
+const swaggerUi = require('swagger-ui-express');
+
 
 class SimplixExpress {
     constructor() {
@@ -15,15 +17,22 @@ class SimplixExpress {
     }
 
     listen(port, callback) {
-        // this.app.get('/docs', this._genDocs());
+        this.app.use('/docs', swaggerUi.serve, swaggerUi.setup(this._genDocs()));
         return this.app.listen(port, callback);
     }
 
     _genDocs() {
-        paramCallback = (type, params) => {
-            console.log(type, params);
+        // paramCallback = (type, params) => {
+        //     console.log(type, params);
+        // };
+        // generalContext.attach({ callback: paramCallback });
+        return {
+            openapi: '3.0.0',
+            info: {
+                title: 'Simplix API',
+                version: '1.0.0',
+            }
         };
-        generalContext.attach({ callback: paramCallback });
     }
 
     _wrap(callback) {

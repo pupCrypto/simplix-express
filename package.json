@@ -1,12 +1,12 @@
 {
   "dependencies": {
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "swagger-ui-express": "^5.0.1"
   },
   "name": "simplix-express",
   "description": "Extensioned Express webframework for simplifying work with building your web-apps",
   "version": "1.0.0",
   "main": "index.js",
-  "devDependencies": {},
   "scripts": {
     "test": "node --test"
   },

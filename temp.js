@@ -1,14 +1,11 @@
-const { BaseValidator, int, struct } = require('./src/validator');
+const { SimplixExpress } = require('./src/simplix');
 
-class Child extends BaseValidator {
-    b = int();
-}
+const simplix = new SimplixExpress();
 
-class TestValidator extends BaseValidator {
-    a = int();
-    child = struct(Child);
-}
+simplix.get('/', () => {
+    return 'Hello World!';
+});
 
-const test = new TestValidator({a: '123', child: {b: '123'}});
-const data = test.validate();
-console.log(data);
+simplix.listen(3000, () => {
+    console.log('Server is running on port 3000');
+});
