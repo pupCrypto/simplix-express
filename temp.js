@@ -1,4 +1,4 @@
-const { BaseValidator, int } = require('./src/validator');
+const { BaseValidator, int, struct } = require('./src/validator');
 
 class Child extends BaseValidator {
     b = int();
@@ -6,7 +6,7 @@ class Child extends BaseValidator {
 
 class TestValidator extends BaseValidator {
     a = int();
-    child = Child;
+    child = struct(Child);
 }
 
 const test = new TestValidator({a: '123', child: {b: '123'}});
