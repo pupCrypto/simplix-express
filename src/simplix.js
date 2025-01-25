@@ -1,4 +1,5 @@
 const { generalContext } = require('./general-context');
+const { getDocs } = require('./misc');
 const express = require('express');
 const swaggerUi = require('swagger-ui-express');
 
@@ -7,32 +8,21 @@ class SimplixExpress {
     constructor() {
         this.app = express();
         this.app.use(express.json());
+        this._allRoutes = [];
     }
 
     get(path, callback) {
+        this._allRoutes.push({ method: 'get', path, callback });
         this.app.get(path, this._wrap(callback));
     }
     post(path, callback) {
+        this._allRoutes.push({ method: 'post', path, callback });
         this.app.post(path, this._wrap(callback));
     }
 
-    listen(port, callback) {
-        this.app.use('/docs', swaggerUi.serve, swaggerUi.setup(this._genDocs()));
+    async listen(port, callback) {
+        this.app.use('/docs', swaggerUi.serve, swaggerUi.setup(await getDocs(this._allRoutes)));
         return this.app.listen(port, callback);
-    }
-
-    _genDocs() {
-        // paramCallback = (type, params) => {
-        //     console.log(type, params);
-        // };
-        // generalContext.attach({ callback: paramCallback });
-        return {
-            openapi: '3.0.0',
-            info: {
-                title: 'Simplix API',
-                version: '1.0.0',
-            }
-        };
     }
 
     _wrap(callback) {

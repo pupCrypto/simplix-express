@@ -1,9 +1,9 @@
-const { SimplixExpress } = require('./src/simplix');
+const { SimplixExpress, query } = require('./index');
 
 const simplix = new SimplixExpress();
 
-simplix.get('/', () => {
-    return 'Hello World!';
+simplix.get('/asdf', (name = query('name')) => {
+    return 'Hello World!' + name;
 });
 
 simplix.listen(3000, () => {
