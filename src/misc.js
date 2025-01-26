@@ -1,17 +1,37 @@
 const { generalContext } = require('./general-context');
 
+function getParam(name, options) {
+    switch (name) {
+        case 'query':
+            return {
+                name: options.name,
+                in: 'query',
+                required: options.required,
+                schema: {
+                    type: 'string',
+                }
+            };
+        case 'param': {
+            return {
+                name: options.name,
+                in: 'path',
+                required: options.required,
+                schema: {
+                    type: 'string',
+                }
+            };
+        }
+        case 'body': {
+            return {
+                name: options.name,
+            }
+        }
+    }
+}
+
 async function getDocPath(route) {
     const parameters = [];
-    const paramCallback = (name, options) => {
-        parameters.push({
-            name: options.name,
-            in: name,
-            required: options.required,
-            schema: {
-                type: 'string',
-            }
-        });
-    }
+    const paramCallback = (name, options) => parameters.push(getParam(name, options));
     generalContext.attach({ request: null, response: null, callback:  paramCallback });
     await route.callback();
     generalContext.clear();
@@ -25,7 +45,7 @@ async function getDocPath(route) {
 async function getDocsPaths(routes) {
     const paths = {};
     for (const route of routes) {
-        paths[route.path] = await getDocPath(route);
+        paths[swaggify(route.path)] = await getDocPath(route);
     }
     return paths;
 }
@@ -41,6 +61,11 @@ async function getDocs(routes) {
     }
 }
 
+function swaggify(path) {
+    return path.replace(/\/:([^\/]+)/g, '/{$1}');
+}
+
 module.exports = {
     getDocs,
+    swaggify,
 }
